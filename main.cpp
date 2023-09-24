@@ -3,7 +3,7 @@
 
 #include <Ntstrsafe.h>
 
-#include "gds.h"
+#include "gds/gds.h"
 
 void driver_unload( const PDRIVER_OBJECT driver_object )
 {
@@ -43,11 +43,10 @@ NTSTATUS initialize_driver( const PDRIVER_OBJECT driver_object )
     KD_PRINT( "Driver loaded\n", 0 );
     KD_PRINT( "Device name: %wZ\n", &device_name );
 
-    gds::init( );
-
-    gds::mi_attach_session( gds::session_space );
-    gds::iterate_kernel_modules( );
-    gds::mi_attach_session( gds::system_space );
+    const gds::GdScanner scanner;
+    KD_PRINT( "Scanning for Guard Dispatch calls...\n", 0 );
+    scanner.scan_all( );
+    KD_PRINT( "Scan complete\n", 0 );
 
     return status;
 }

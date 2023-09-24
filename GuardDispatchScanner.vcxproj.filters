@@ -17,21 +17,36 @@
       <UniqueIdentifier>{8E41214B-6785-4CFE-B992-037D68949A14}</UniqueIdentifier>
       <Extensions>inf;inv;inx;mof;mc;</Extensions>
     </Filter>
+    <Filter Include="Header Files\gds">
+      <UniqueIdentifier>{1aee125e-b8e6-4aac-937b-81273d2b7ab6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\utils">
+      <UniqueIdentifier>{e2d02bb0-9889-4e64-be6f-0204a080c4a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\gds">
+      <UniqueIdentifier>{3d6d082d-3d15-4e17-b596-4fdb50fa1ded}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\utils">
+      <UniqueIdentifier>{a4ed2d23-cb49-43a5-accf-7ec66bb1d181}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="gds\gds.cpp">
+      <Filter>Source Files\gds</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="gds.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="utils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="definitions.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\utils.h">
+      <Filter>Header Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="gds\gds.h">
+      <Filter>Header Files\gds</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
