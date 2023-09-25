@@ -3,7 +3,7 @@
 #include <Ntstrsafe.h>
 #include <wdm.h>
 
-#include "..\utils\utils.h"
+#include "../utils/utils.h"
 
 namespace gds
 {
