@@ -164,13 +164,52 @@ namespace gds
                 };
 
                 if ( next_dispatch && data_pointer )
-                    count++;
+                {
+                    // dereference data pointer and check if it's outside of any module range (ignoring nulled values)
+                    const auto value = *reinterpret_cast< uintptr_t* >( data_pointer );
+                    if ( value && !in_any_module_range( value ) )
+                    {
+                        KD_PRINT( "Found data ptr outside of valid module at 0x%p\n", next_dispatch );
+                        count++;
+                    }
+                }
             }
 
             current++;
         }
 
         if ( count )
-            KD_LOG( "Found %d calls to _guard_dispatch_icall in %s\n", count, module_name );
+            KD_LOG( "Found %d invalid data pointers inside module %s\n", count, module_name );
+    }
+
+    bool GdScanner::in_any_module_range( const uintptr_t addr )
+    {
+        ULONG size { };
+        ZwQuerySystemInformation( kernel::SystemModuleInformation, nullptr, size, &size );
+        if ( !size )
+            return false;
+
+        const auto modules {
+            static_cast< kernel::_RTL_PROCESS_MODULES* >( ExAllocatePoolZero( NonPagedPoolNx, size, ' sdg' ) )
+        };
+        if ( !modules )
+            return false;
+
+        ZwQuerySystemInformation( kernel::SystemModuleInformation, modules, size, &size );
+
+        for ( ULONG i = 0; i < modules->NumberOfModules; i++ )
+        {
+            const auto base { reinterpret_cast< uintptr_t >( modules->Modules[ i ].ImageBase ) };
+            const auto mod_size { base + modules->Modules[ i ].ImageSize };
+
+            if ( addr >= base && addr <= ( base + mod_size ) )
+            {
+                ExFreePool( modules );
+                return true;
+            }
+        }
+
+        ExFreePool( modules );
+        return false;
     }
 }

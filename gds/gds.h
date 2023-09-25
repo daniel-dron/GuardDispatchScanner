@@ -26,6 +26,8 @@ namespace gds
         static uintptr_t get_guard_dispatch_icall_addr( uintptr_t base, size_t size );
         static void scan_module( const char* module_name, uintptr_t base, size_t size );
 
+        static bool in_any_module_range( uintptr_t addr );
+
         uintptr_t kernel_base_ { };
 
         typedef PEPROCESS ( __fastcall*mm_get_session_by_id_t )( int session_id );
