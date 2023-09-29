@@ -169,7 +169,7 @@ namespace gds
                     const auto value = *reinterpret_cast< uintptr_t* >( data_pointer );
                     if ( value && !in_any_module_range( value ) )
                     {
-                        KD_PRINT( "Found data ptr outside of valid module at 0x%p\n", next_dispatch );
+                        KD_PRINT( "Found data ptr outside of valid module at 0x%p\n", value );
                         count++;
                     }
                 }
@@ -200,9 +200,9 @@ namespace gds
         for ( ULONG i = 0; i < modules->NumberOfModules; i++ )
         {
             const auto base { reinterpret_cast< uintptr_t >( modules->Modules[ i ].ImageBase ) };
-            const auto mod_size { base + modules->Modules[ i ].ImageSize };
+            const auto end { base + modules->Modules[ i ].ImageSize };
 
-            if ( addr >= base && addr <= ( base + mod_size ) )
+            if ( addr >= base && addr <= end )
             {
                 ExFreePool( modules );
                 return true;
